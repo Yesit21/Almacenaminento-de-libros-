@@ -146,3 +146,55 @@
     </div>
 </div>
 {% endblock %}
+
+{% block extra_js %}
+<script>
+(() => {
+    const isbnInput = document.querySelector('input[name="isbn"]');
+    if (!isbnInput) return;
+
+    const ensureFeedback = (input) => {
+        const existing = input.parentElement?.querySelector('[data-live-feedback="true"]');
+        if (existing) return existing;
+
+        const feedback = document.createElement('div');
+        feedback.className = 'invalid-feedback d-block';
+        feedback.dataset.liveFeedback = 'true';
+        feedback.style.display = 'none';
+        input.insertAdjacentElement('afterend', feedback);
+        return feedback;
+    };
+
+    const setInvalid = (input, message) => {
+        const feedback = ensureFeedback(input);
+        input.classList.add('is-invalid');
+        feedback.textContent = message;
+        feedback.style.display = 'block';
+    };
+
+    const clearInvalid = (input) => {
+        const feedback = ensureFeedback(input);
+        input.classList.remove('is-invalid');
+        feedback.textContent = '';
+        feedback.style.display = 'none';
+    };
+
+    const isValidIsbnFormat = (value) => {
+        const v = (value || '').trim();
+        if (!v) return true;
+        return /^[0-9-]+$/.test(v);
+    };
+
+    const validateIsbn = () => {
+        if (isValidIsbnFormat(isbnInput.value)) {
+            clearInvalid(isbnInput);
+        } else {
+            setInvalid(isbnInput, 'El ISBN solo debe contener números y guiones.');
+        }
+    };
+
+    isbnInput.addEventListener('input', validateIsbn);
+    isbnInput.addEventListener('blur', validateIsbn);
+})();
+</script>
+{% endblock %}

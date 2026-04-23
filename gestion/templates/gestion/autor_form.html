@@ -145,3 +145,55 @@
     </div>
 </div>
 {% endblock %}
+
+{% block extra_js %}
+<script>
+(() => {
+    const correoInput = document.querySelector('input[name="correo"]');
+    if (!correoInput) return;
+
+    const ensureFeedback = (input) => {
+        const existing = input.parentElement?.querySelector('[data-live-feedback="true"]');
+        if (existing) return existing;
+
+        const feedback = document.createElement('div');
+        feedback.className = 'invalid-feedback d-block';
+        feedback.dataset.liveFeedback = 'true';
+        feedback.style.display = 'none';
+        input.insertAdjacentElement('afterend', feedback);
+        return feedback;
+    };
+
+    const setInvalid = (input, message) => {
+        const feedback = ensureFeedback(input);
+        input.classList.add('is-invalid');
+        feedback.textContent = message;
+        feedback.style.display = 'block';
+    };
+
+    const clearInvalid = (input) => {
+        const feedback = ensureFeedback(input);
+        input.classList.remove('is-invalid');
+        feedback.textContent = '';
+        feedback.style.display = 'none';
+    };
+
+    const isValidEmail = (value) => {
+        const v = (value || '').trim();
+        if (!v) return true;
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    };
+
+    const validateCorreo = () => {
+        if (isValidEmail(correoInput.value)) {
+            clearInvalid(correoInput);
+        } else {
+            setInvalid(correoInput, 'Ingresa un correo válido (ejemplo@dominio.com).');
+        }
+    };
+
+    correoInput.addEventListener('input', validateCorreo);
+    correoInput.addEventListener('blur', validateCorreo);
+})();
+</script>
+{% endblock %}

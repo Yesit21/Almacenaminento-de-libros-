@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
@@ -145,6 +147,10 @@ class AutorDeleteView(DeleteView):
     template_name = 'gestion/autor_confirm_delete.html'
     success_url = reverse_lazy('autor_list')
 
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, "Autor eliminado correctamente")
+        return super().delete(request, *args, **kwargs)
+
 # ============= VISTAS GENÉRICAS PARA LIBROS =============
 
 class LibroListView(ListView):
@@ -261,3 +267,7 @@ class LibroDeleteView(DeleteView):
     model = Libro
     template_name = 'gestion/libro_confirm_delete.html'
     success_url = reverse_lazy('libro_list')
+    
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, "Libro eliminado correctamente")
+        return super().delete(request, *args, **kwargs)

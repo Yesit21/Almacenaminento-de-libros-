@@ -48,12 +48,12 @@
                     <div class="mb-3">
                         <label for="{{ form.nombre.id_for_label }}" class="form-label">{{ form.nombre.label }}</label>
                         {% if form.nombre.errors %}
-                            {{ form.nombre.as_widget(attrs={'class': 'form-control is-invalid', 'placeholder': 'Ej: Gabriel García Márquez'}) }}
+                            {{ form.nombre }}
                             <div class="invalid-feedback d-block">
                                 {{ form.nombre.errors }}
                             </div>
                         {% else %}
-                            {{ form.nombre.as_widget(attrs={'class': 'form-control', 'placeholder': 'Ej: Gabriel García Márquez'}) }}
+                            {{ form.nombre }}
                         {% endif %}
                         <div class="form-text">Escribe el nombre completo del autor.</div>
                     </div>
@@ -61,12 +61,12 @@
                     <div class="mb-3">
                         <label for="{{ form.correo.id_for_label }}" class="form-label">{{ form.correo.label }}</label>
                         {% if form.correo.errors %}
-                            {{ form.correo.as_widget(attrs={'class': 'form-control is-invalid', 'placeholder': 'Ej: autor@correo.com'}) }}
+                            {{ form.correo }}
                             <div class="invalid-feedback d-block">
                                 {{ form.correo.errors }}
                             </div>
                         {% else %}
-                            {{ form.correo.as_widget(attrs={'class': 'form-control', 'placeholder': 'Ej: autor@correo.com'}) }}
+                            {{ form.correo }}
                         {% endif %}
                         <div class="form-text">Escribe un correo válido (ejemplo@dominio.com).</div>
                     </div>
@@ -74,12 +74,12 @@
                     <div class="mb-3">
                         <label for="{{ form.nacionalidad.id_for_label }}" class="form-label">{{ form.nacionalidad.label }}</label>
                         {% if form.nacionalidad.errors %}
-                            {{ form.nacionalidad.as_widget(attrs={'class': 'form-control is-invalid', 'placeholder': 'Ej: Colombiana'}) }}
+                            {{ form.nacionalidad }}
                             <div class="invalid-feedback d-block">
                                 {{ form.nacionalidad.errors }}
                             </div>
                         {% else %}
-                            {{ form.nacionalidad.as_widget(attrs={'class': 'form-control', 'placeholder': 'Ej: Colombiana'}) }}
+                            {{ form.nacionalidad }}
                         {% endif %}
                         <div class="form-text">Escribe la nacionalidad del autor.</div>
                     </div>
@@ -87,12 +87,12 @@
                     <div class="mb-3">
                         <label for="{{ form.fecha_nacimiento.id_for_label }}" class="form-label">{{ form.fecha_nacimiento.label }}</label>
                         {% if form.fecha_nacimiento.errors %}
-                            {{ form.fecha_nacimiento.as_widget(attrs={'class': 'form-control is-invalid', 'placeholder': 'Ej: 1982-03-06'}) }}
+                            {{ form.fecha_nacimiento }}
                             <div class="invalid-feedback d-block">
                                 {{ form.fecha_nacimiento.errors }}
                             </div>
                         {% else %}
-                            {{ form.fecha_nacimiento.as_widget(attrs={'class': 'form-control', 'placeholder': 'Ej: 1982-03-06'}) }}
+                            {{ form.fecha_nacimiento }}
                         {% endif %}
                         <div class="form-text">Selecciona la fecha de nacimiento del autor.</div>
                     </div>
@@ -100,12 +100,12 @@
                     <div class="mb-3">
                         <label for="{{ form.biografia.id_for_label }}" class="form-label">{{ form.biografia.label }}</label>
                         {% if form.biografia.errors %}
-                            {{ form.biografia.as_widget(attrs={'class': 'form-control is-invalid', 'placeholder': 'Ej: Breve reseña del autor...'}) }}
+                            {{ form.biografia }}
                             <div class="invalid-feedback d-block">
                                 {{ form.biografia.errors }}
                             </div>
                         {% else %}
-                            {{ form.biografia.as_widget(attrs={'class': 'form-control', 'placeholder': 'Ej: Breve reseña del autor...'}) }}
+                            {{ form.biografia }}
                         {% endif %}
                         <div class="form-text">Escribe una breve biografía (opcional).</div>
                     </div>

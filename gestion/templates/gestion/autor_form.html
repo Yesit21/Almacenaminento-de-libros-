@@ -12,18 +12,77 @@
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
-                    
-                    {% for field in form %}
-                    <div class="mb-3">
-                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                        {{ field }}
-                        {% if field.errors %}
-                        <div class="text-danger">
-                            {{ field.errors }}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger mb-3">
+                            {{ form.non_field_errors }}
                         </div>
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.nombre.id_for_label }}" class="form-label">{{ form.nombre.label }}</label>
+                        {% if form.nombre.errors %}
+                            {{ form.nombre.as_widget(attrs={'class': 'form-control is-invalid', 'placeholder': 'Ej: Gabriel García Márquez'}) }}
+                            <div class="invalid-feedback d-block">
+                                {{ form.nombre.errors }}
+                            </div>
+                        {% else %}
+                            {{ form.nombre.as_widget(attrs={'class': 'form-control', 'placeholder': 'Ej: Gabriel García Márquez'}) }}
                         {% endif %}
+                        <div class="form-text">Escribe el nombre completo del autor.</div>
                     </div>
-                    {% endfor %}
+
+                    <div class="mb-3">
+                        <label for="{{ form.correo.id_for_label }}" class="form-label">{{ form.correo.label }}</label>
+                        {% if form.correo.errors %}
+                            {{ form.correo.as_widget(attrs={'class': 'form-control is-invalid', 'placeholder': 'Ej: autor@correo.com'}) }}
+                            <div class="invalid-feedback d-block">
+                                {{ form.correo.errors }}
+                            </div>
+                        {% else %}
+                            {{ form.correo.as_widget(attrs={'class': 'form-control', 'placeholder': 'Ej: autor@correo.com'}) }}
+                        {% endif %}
+                        <div class="form-text">Escribe un correo válido (ejemplo@dominio.com).</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.nacionalidad.id_for_label }}" class="form-label">{{ form.nacionalidad.label }}</label>
+                        {% if form.nacionalidad.errors %}
+                            {{ form.nacionalidad.as_widget(attrs={'class': 'form-control is-invalid', 'placeholder': 'Ej: Colombiana'}) }}
+                            <div class="invalid-feedback d-block">
+                                {{ form.nacionalidad.errors }}
+                            </div>
+                        {% else %}
+                            {{ form.nacionalidad.as_widget(attrs={'class': 'form-control', 'placeholder': 'Ej: Colombiana'}) }}
+                        {% endif %}
+                        <div class="form-text">Escribe la nacionalidad del autor.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.fecha_nacimiento.id_for_label }}" class="form-label">{{ form.fecha_nacimiento.label }}</label>
+                        {% if form.fecha_nacimiento.errors %}
+                            {{ form.fecha_nacimiento.as_widget(attrs={'class': 'form-control is-invalid', 'placeholder': 'Ej: 1982-03-06'}) }}
+                            <div class="invalid-feedback d-block">
+                                {{ form.fecha_nacimiento.errors }}
+                            </div>
+                        {% else %}
+                            {{ form.fecha_nacimiento.as_widget(attrs={'class': 'form-control', 'placeholder': 'Ej: 1982-03-06'}) }}
+                        {% endif %}
+                        <div class="form-text">Selecciona la fecha de nacimiento del autor.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.biografia.id_for_label }}" class="form-label">{{ form.biografia.label }}</label>
+                        {% if form.biografia.errors %}
+                            {{ form.biografia.as_widget(attrs={'class': 'form-control is-invalid', 'placeholder': 'Ej: Breve reseña del autor...'}) }}
+                            <div class="invalid-feedback d-block">
+                                {{ form.biografia.errors }}
+                            </div>
+                        {% else %}
+                            {{ form.biografia.as_widget(attrs={'class': 'form-control', 'placeholder': 'Ej: Breve reseña del autor...'}) }}
+                        {% endif %}
+                        <div class="form-text">Escribe una breve biografía (opcional).</div>
+                    </div>
                     
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -34,13 +93,4 @@
         </div>
     </div>
 </div>
-
-<style>
-    input[type="text"], input[type="email"], input[type="date"], textarea, select {
-        width: 100%;
-        padding: 0.375rem 0.75rem;
-        border: 1px solid #ced4da;
-        border-radius: 0.25rem;
-    }
-</style>
 {% endblock %}

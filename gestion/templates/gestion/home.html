@@ -1,0 +1,287 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Dashboard - Gestión de Libros{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Encabezado -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-4">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </h1>
+            <p class="lead text-muted">Sistema de Gestión de Libros y Autores</p>
+        </div>
+    </div>
+
+    <!-- Tarjetas de Estadísticas -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card text-white bg-primary shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title text-uppercase mb-0">Total Autores</h6>
+                            <h2 class="display-4 mb-0">{{ total_autores }}</h2>
+                        </div>
+                        <div>
+                            <i class="bi bi-people" style="font-size: 4rem; opacity: 0.3;"></i>
+                        </div>
+                    </div>
+                    <a href="{% url 'autor_list' %}" class="btn btn-light btn-sm mt-3">
+                        Ver todos <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card text-white bg-success shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title text-uppercase mb-0">Total Libros</h6>
+                            <h2 class="display-4 mb-0">{{ total_libros }}</h2>
+                        </div>
+                        <div>
+                            <i class="bi bi-book" style="font-size: 4rem; opacity: 0.3;"></i>
+                        </div>
+                    </div>
+                    <a href="{% url 'libro_list' %}" class="btn btn-light btn-sm mt-3">
+                        Ver todos <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos y Estadísticas -->
+    <div class="row mb-4">
+        <!-- Top Autores -->
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-trophy"></i> Top 5 Autores con Más Libros
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if autores_top %}
+                    <div class="list-group list-group-flush">
+                        {% for autor in autores_top %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ forloop.counter }}. {{ autor.nombre }}</strong>
+                                <br>
+                                <small class="text-muted">{{ autor.nacionalidad }}</small>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">
+                                {{ autor.num_libros }} libro{{ autor.num_libros|pluralize }}
+                            </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center">No hay datos disponibles</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Géneros Populares -->
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">
+                        <i class="bi bi-bar-chart"></i> Géneros Más Populares
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if generos_populares %}
+                    <div class="list-group list-group-flush">
+                        {% for genero in generos_populares %}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <strong>{{ genero.genero }}</strong>
+                                <span class="badge bg-warning text-dark">{{ genero.total }}</span>
+                            </div>
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-warning" role="progressbar" 
+                                     style="width: {{ genero.total|add:'0'|floatformat:0 }}%"
+                                     aria-valuenow="{{ genero.total }}" aria-valuemin="0" aria-valuemax="100">
+                                    {{ genero.total }} libro{{ genero.total|pluralize }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center">No hay datos disponibles</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Últimos Registros -->
+    <div class="row mb-4">
+        <!-- Últimos Autores -->
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-clock-history"></i> Últimos Autores Registrados
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if ultimos_autores %}
+                    <div class="list-group list-group-flush">
+                        {% for autor in ultimos_autores %}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">{{ autor.nombre }}</h6>
+                                    <small class="text-muted">
+                                        <i class="bi bi-envelope"></i> {{ autor.correo }}
+                                    </small>
+                                </div>
+                                <a href="{% url 'autor_update' autor.pk %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'autor_list' %}" class="btn btn-primary btn-sm">Ver todos</a>
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center">No hay autores registrados</p>
+                    <div class="text-center">
+                        <a href="{% url 'autor_create' %}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Agregar Primer Autor
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Últimos Libros -->
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-clock-history"></i> Últimos Libros Registrados
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if ultimos_libros %}
+                    <div class="list-group list-group-flush">
+                        {% for libro in ultimos_libros %}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">{{ libro.titulo }}</h6>
+                                    <small class="text-muted">
+                                        <i class="bi bi-person"></i> {{ libro.autor.nombre }}
+                                    </small>
+                                    <br>
+                                    <span class="badge bg-info">{{ libro.genero }}</span>
+                                </div>
+                                <a href="{% url 'libro_update' libro.pk %}" class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'libro_list' %}" class="btn btn-success btn-sm">Ver todos</a>
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center">No hay libros registrados</p>
+                    <div class="text-center">
+                        <a href="{% url 'libro_create' %}" class="btn btn-success">
+                            <i class="bi bi-plus-circle"></i> Agregar Primer Libro
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nacionalidades -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-globe"></i> Nacionalidades Más Comunes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if nacionalidades_comunes %}
+                    <div class="row">
+                        {% for nac in nacionalidades_comunes %}
+                        <div class="col-md-2 text-center mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="text-primary">{{ nac.total }}</h3>
+                                    <p class="mb-0">{{ nac.nacionalidad }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center">No hay datos disponibles</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Acciones Rápidas -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-lightning"></i> Acciones Rápidas
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'autor_create' %}" class="btn btn-primary btn-lg w-100">
+                                <i class="bi bi-person-plus"></i><br>
+                                Nuevo Autor
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'libro_create' %}" class="btn btn-success btn-lg w-100">
+                                <i class="bi bi-book"></i><br>
+                                Nuevo Libro
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'autor_list' %}" class="btn btn-info btn-lg w-100">
+                                <i class="bi bi-list"></i><br>
+                                Ver Autores
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'libro_list' %}" class="btn btn-warning btn-lg w-100">
+                                <i class="bi bi-list"></i><br>
+                                Ver Libros
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

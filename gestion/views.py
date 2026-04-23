@@ -1,11 +1,46 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib import messages
-from django.db.models import Q
 from django.db.models import Q, Count
+from datetime import datetime, timedelta
 from .models import Autor, Libro
 from .forms import AutorForm, LibroForm
+
+# ============= VISTA DE INICIO (DASHBOARD) =============
+
+class HomeView(TemplateView):
+    template_name = 'gestion/home.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Estadísticas generales
+        context['total_autores'] = Autor.objects.count()
+        context['total_libros'] = Libro.objects.count()
+        
+        # Últimos registros
+        context['ultimos_autores'] = Autor.objects.order_by('-id')[:5]
+        context['ultimos_libros'] = Libro.objects.select_related('autor').order_by('-id')[:5]
+        
+        # Autores con más libros
+        context['autores_top'] = Autor.objects.annotate(
+            num_libros=Count('libros')
+        ).order_by('-num_libros')[:5]
+        
+        # Géneros más populares
+        generos = Libro.objects.values('genero').annotate(
+            total=Count('genero')
+        ).order_by('-total')[:5]
+        context['generos_populares'] = generos
+        
+        # Nacionalidades más comunes
+        nacionalidades = Autor.objects.values('nacionalidad').annotate(
+            total=Count('nacionalidad')
+        ).order_by('-total')[:5]
+        context['nacionalidades_comunes'] = nacionalidades
+        
+        return context
 
 # ============= VISTAS GENÉRICAS PARA AUTORES =============
 

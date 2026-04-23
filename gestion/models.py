@@ -6,6 +6,8 @@ class Autor(models.Model):
     nacionalidad = models.CharField(max_length=50)
     fecha_nacimiento = models.DateField()
     biografia = models.TextField(blank=True, null=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
     
     class Meta:
         verbose_name = 'Autor'
@@ -21,6 +23,8 @@ class Libro(models.Model):
     genero = models.CharField(max_length=50)
     isbn = models.CharField(max_length=20, unique=True)
     autor = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='libros')
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
     
     class Meta:
         verbose_name = 'Libro'
